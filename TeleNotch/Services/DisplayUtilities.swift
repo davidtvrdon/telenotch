@@ -14,14 +14,16 @@ enum DisplayUtilities {
         return screen.frame.maxY - screen.visibleFrame.maxY
     }
 
-    /// Calculate the overlay frame centered below the menu bar
+    /// Calculate the overlay frame attached to the very top of the screen (Notchie-style).
+    /// The window's top edge is flush with the screen's top edge, so on a MacBook
+    /// it tucks behind the notch and on an iMac it reaches into the menu bar area.
     static func overlayFrame(width: CGFloat, height: CGFloat) -> NSRect {
         guard let screen = NSScreen.main else {
             return NSRect(x: 0, y: 0, width: width, height: height)
         }
 
         let x = screen.frame.midX - width / 2.0
-        let y = screen.visibleFrame.maxY - height
+        let y = screen.frame.maxY - height   // flush with top edge of screen
 
         return NSRect(x: x, y: y, width: width, height: height)
     }

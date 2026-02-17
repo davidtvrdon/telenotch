@@ -11,6 +11,10 @@ class TeleprompterState {
     var isPlaying: Bool = false
     var isHovering: Bool = false
 
+    // MARK: - Countdown
+    var countdownValue: Int = 0
+    private var countdownTimer: Timer?
+
     // MARK: - Speed (0.0 to 1.0)
     var speedNormalized: CGFloat = 0.03
 
@@ -24,7 +28,7 @@ class TeleprompterState {
     // MARK: - Display Settings
     var fontSize: CGFloat = 14.0
     var overlayWidth: CGFloat = 300.0
-    var overlayHeight: CGFloat = 70.0
+    var overlayHeight: CGFloat = 100.0
 
     // MARK: - Features
     var loopEnabled: Bool = false
@@ -41,5 +45,41 @@ class TeleprompterState {
     func clampScrollOffset() {
         let maxOffset = max(0, contentHeight - overlayHeight + 40)
         scrollOffset = max(0, min(scrollOffset, maxOffset))
+    }
+
+    /// Called when user presses play/pause (Space key or button).
+    /// If paused → starts a 3-2-1 countdown then plays.
+    /// If playing or counting down → stops immediately.
+    func requestPlayPause() {
+        if isPlaying || countdownValue > 0 {
+            // Stop immediately
+            cancelCountdown()
+            isPlaying = false
+        } else {
+            // Start countdown
+            startCountdown()
+        }
+    }
+
+    private func startCountdown() {
+        countdownValue = 3
+        countdownTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] timer in
+            guard let self else { timer.invalidate(); return }
+            DispatchQueue.main.async {
+                self.countdownValue -= 1
+                if self.countdownValue <= 0 {
+                    timer.invalidate()
+                    self.countdownTimer = nil
+                    self.countdownValue = 0
+                    self.isPlaying = true
+                }
+            }
+        }
+    }
+
+    private func cancelCountdown() {
+        countdownTimer?.invalidate()
+        countdownTimer = nil
+        countdownValue = 0
     }
 }

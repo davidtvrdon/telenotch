@@ -42,7 +42,7 @@ class ScrollEngine {
     }
 
     func togglePlayPause() {
-        state.isPlaying.toggle()
+        state.requestPlayPause()
     }
 
     func adjustSpeed(by delta: CGFloat) {

@@ -11,9 +11,10 @@ class OverlayPanel: NSPanel {
             defer: false
         )
 
-        // Always on top
-        level = .floating
+        // Floating panel behavior first (this sets level to .floating)
         isFloatingPanel = true
+        // Then override level to sit above the menu bar (mainMenu=24, we use 25)
+        level = NSWindow.Level(rawValue: Int(CGWindowLevelForKey(.mainMenuWindow)) + 1)
 
         // Transparent background
         isOpaque = false
@@ -52,4 +53,9 @@ class OverlayPanel: NSPanel {
     // Allow button clicks inside the panel while nonactivatingPanel prevents app activation
     override var canBecomeKey: Bool { true }
     override var canBecomeMain: Bool { false }
+
+    // Prevent macOS from constraining the window below the menu bar
+    override func constrainFrameRect(_ frameRect: NSRect, to screen: NSScreen?) -> NSRect {
+        return frameRect
+    }
 }
