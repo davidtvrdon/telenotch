@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TeleNotch - Camera-First Teleprompter for Mac</title>
+    <meta name="description" content="A minimal macOS teleprompter that sits below your camera notch. Read scripts while maintaining eye contact. Free and local-only.">
+    <link rel="icon" type="image/png" href="icon.png">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', sans-serif;
+            background: #000;
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .hero {
+            max-width: 640px;
+            width: 100%;
+            padding: 80px 24px 60px;
+            text-align: center;
+        }
+
+        .icon {
+            width: 120px;
+            height: 120px;
+            border-radius: 26px;
+            margin-bottom: 32px;
+        }
+
+        h1 {
+            font-size: 40px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            margin-bottom: 12px;
+        }
+
+        .tagline {
+            font-size: 18px;
+            color: rgba(255, 255, 255, 0.6);
+            margin-bottom: 40px;
+            line-height: 1.5;
+        }
+
+        .download-btn {
+            display: inline-block;
+            background: #fff;
+            color: #000;
+            font-size: 16px;
+            font-weight: 600;
+            padding: 14px 32px;
+            border-radius: 12px;
+            text-decoration: none;
+            transition: opacity 0.2s;
+        }
+
+        .download-btn:hover {
+            opacity: 0.85;
+        }
+
+        .download-note {
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.35);
+            margin-top: 12px;
+        }
+
+        .preview {
+            max-width: 720px;
+            width: 100%;
+            padding: 0 24px;
+            margin-bottom: 60px;
+        }
+
+        .preview-window {
+            background: #111;
+            border-radius: 16px;
+            padding: 20px 24px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .preview-notch {
+            width: 100px;
+            height: 24px;
+            background: #000;
+            border-radius: 0 0 12px 12px;
+            margin: -20px auto 16px;
+        }
+
+        .preview-line {
+            height: 10px;
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+
+        .preview-line:nth-child(2) { width: 85%; }
+        .preview-line:nth-child(3) { width: 70%; opacity: 0.5; }
+        .preview-line:nth-child(4) { width: 90%; opacity: 0.3; }
+        .preview-line:nth-child(5) { width: 60%; opacity: 0.15; }
+
+        .preview-progress {
+            position: absolute;
+            top: 48px;
+            right: 20px;
+            width: 14px;
+            height: 14px;
+        }
+
+        .preview-progress circle {
+            fill: none;
+            stroke-width: 2;
+        }
+
+        .features {
+            max-width: 640px;
+            width: 100%;
+            padding: 0 24px 80px;
+        }
+
+        .features h2 {
+            font-size: 14px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: rgba(255, 255, 255, 0.4);
+            margin-bottom: 24px;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .feature {
+            background: rgba(255, 255, 255, 0.04);
+            border-radius: 12px;
+            padding: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .feature h3 {
+            font-size: 15px;
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+
+        .feature p {
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.5);
+            line-height: 1.5;
+        }
+
+        footer {
+            padding: 24px;
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.25);
+        }
+
+        footer a {
+            color: rgba(255, 255, 255, 0.4);
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        @media (max-width: 480px) {
+            .hero { padding-top: 48px; }
+            h1 { font-size: 28px; }
+            .tagline { font-size: 16px; }
+            .feature-grid { grid-template-columns: 1fr; }
+            .icon { width: 80px; height: 80px; border-radius: 18px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="hero">
+        <img src="icon.png" alt="TeleNotch icon" class="icon">
+        <h1>TeleNotch</h1>
+        <p class="tagline">A minimal teleprompter for Mac that sits right below your camera. Read your script while looking directly at the lens.</p>
+        <a href="https://github.com/davidtvrdon/telenotch/releases/latest/download/TeleNotch.dmg" class="download-btn">Download for Mac</a>
+        <p class="download-note">macOS 14.0+ &middot; Apple Silicon &middot; Free</p>
+    </div>
+
+    <div class="preview">
+        <div class="preview-window">
+            <div class="preview-notch"></div>
+            <div class="preview-line" style="width: 85%"></div>
+            <div class="preview-line" style="width: 70%"></div>
+            <div class="preview-line" style="width: 90%"></div>
+            <div class="preview-line" style="width: 60%"></div>
+            <svg class="preview-progress" viewBox="0 0 14 14">
+                <circle cx="7" cy="7" r="5.5" stroke="rgba(34,197,94,0.15)"/>
+                <circle cx="7" cy="7" r="5.5" stroke="rgba(34,197,94,0.6)" stroke-dasharray="34.56" stroke-dashoffset="10.37" stroke-linecap="round" transform="rotate(-90 7 7)"/>
+            </svg>
+        </div>
+    </div>
+
+    <div class="features">
+        <h2>Features</h2>
+        <div class="feature-grid">
+            <div class="feature">
+                <h3>Always on top</h3>
+                <p>Floats above Zoom, Meet, or any app. Your script is always visible.</p>
+            </div>
+            <div class="feature">
+                <h3>Ghost mode</h3>
+                <p>Invisible to screen sharing so your audience only sees you, not the script.</p>
+            </div>
+            <div class="feature">
+                <h3>Keyboard control</h3>
+                <p>Space to play/pause, arrows for speed. No mouse needed during recording.</p>
+            </div>
+            <div class="feature">
+                <h3>Completely local</h3>
+                <p>No accounts, no internet required. Your scripts never leave your Mac.</p>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        Built by <a href="https://davidtvrdon.com">David Tvrdon</a>
+    </footer>
+</body>
+</html>
