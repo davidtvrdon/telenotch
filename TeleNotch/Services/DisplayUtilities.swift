@@ -14,7 +14,7 @@ enum DisplayUtilities {
         return screen.frame.maxY - screen.visibleFrame.maxY
     }
 
-    /// Calculate the overlay frame attached to the very top of the screen (Notchie-style).
+    /// Calculate the overlay frame attached to the very top of the screen.
     /// The window's top edge is flush with the screen's top edge, so on a MacBook
     /// it tucks behind the notch and on an iMac it reaches into the menu bar area.
     static func overlayFrame(width: CGFloat, height: CGFloat) -> NSRect {
